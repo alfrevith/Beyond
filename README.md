@@ -22,11 +22,12 @@ Abre la dirección que imprime el servidor: `http://127.0.0.1:4173`.
 index.html                         Entrada principal y estructura accesible
 assets/
   css/styles.css                   Diseño y adaptación a distintos tamaños
-  css/science.css                  Componentes compartidos de Ciencias y Ciudadanía
+  css/science.css                  Componentes de estudio compartidos por las tres materias
   images/beyond-logo.png            Logo e icono del navegador
   js/
     data/math-questions.js         100 preguntas originales, intactas
     data/math-guides.js            22 guías: concepto, regla, ejemplo y consejo
+    data/math-learning.js          Metadatos, pasos y feedback sin cambiar el banco original
     data/science-bank.js           Constructor compartido y respuestas reproducibles
     data/science-physics.js        Física: 30 preguntas
     data/science-chemistry.js      Química: 25 preguntas
@@ -42,10 +43,11 @@ assets/
     data/citizenship-guides.js     14 guías sociales
     data/subjects.js               Registro de materias y disponibilidad
     storage.js                    Guardado, validación y lectura de progreso anterior
-    quiz.js                       Motor de preguntas, estadísticas y repaso
+    quiz.js                       Motor original conservado para compatibilidad
     science-session.js            Motor compartido de práctica, simulacro, repaso e historial
     science-ui.js                 Interfaz compartida, fuentes y recursos HTML/SVG
     app.js                        Navegación e interfaz
+    dashboard.js                  Resúmenes de práctica, sugerencias y archivos recientes
 scripts/                           Servidor, recursos y validadores de Ciencias y Ciudadanía
 tests/                             Pruebas del banco, progreso y motor
 ```
@@ -53,11 +55,13 @@ tests/                             Pruebas del banco, progreso y motor
 ## Funciones
 
 - Lobby con tres materias y disponibilidad explícita.
+- Mi espacio: avance, precisión, tiempo y temas que reforzar por materia; continuación de preguntas pendientes, simulacros en curso e historial reciente conjunto.
 - Aviso inicial con el texto de independencia y alcance de AVANZO 2026, personaje proporcionado y botones Continuar/Salir. Se muestra una vez por apertura al llegar al lobby; vuelve a aparecer al recargar, sin repetirse al navegar entre materias e inicio. Salir abre una página en blanco y conserva el progreso local.
 - Guías rápidas por tema y práctica de un tema o del banco completo.
 - Explicación inmediata en aciertos y errores, con ayudas durante el ejercicio.
 - Primera respuesta conservada para el diagnóstico; repaso de errores independiente.
 - Resultados por tema y recomendaciones basadas en errores realmente respondidos.
+- Simulacros aleatorios en las tres materias: opciones de 10 a 100 preguntas en pasos de cinco u otra cantidad entera entre 1 y 100. Cada intento conserva su selección al recargar y tiene resultados e historial propios.
 - Tiempo de estudio sin límite; se pausa al salir de la práctica o al ocultar la pestaña.
 - Guardado local de respuestas, posición y tiempo. Reinicio con confirmación.
 - Navegación por teclado, foco visible y menú de preguntas plegable en celular.
@@ -66,7 +70,19 @@ El aviso está aislado en `assets/js/welcome.js` y `assets/css/welcome.css`, con
 
 El almacenamiento pertenece al navegador y al origen. Cambiar de navegador, usar modo privado, borrar datos o pasar de `file://` al servidor local puede dar lugar a un progreso distinto. Las claves actuales usan el prefijo `beyond_`; se recuperan también los progresos de versiones anteriores cuando son accesibles desde el mismo origen, sin borrar esos registros.
 
+## Matemática y seguimiento
+
+Las 100 preguntas originales conservan enunciados, orden, alternativas y claves. Un archivo adicional añade 300 explicaciones de distractores, pasos de resolución, metadatos y cinco recursos de datos. Matemática usa ahora la misma confirmación explícita, simulacro independiente, repaso, resultados por área/tema e historial que las demás materias, conservando sus 22 guías.
+
+El progreso previo se migra sin cambiar la correspondencia de respuestas y preguntas y se respalda en `beyond_matematica_v1_respaldo_original`. La práctica mantiene su clave original; el resto de sesiones usa `beyond_matematica_v1_sesiones`. El nuevo panel lee la práctica de cada materia sin confundirla con el simulacro o el archivo consultado, y compara únicamente simulacros completos compatibles.
+
+Consulta [compatibilidad, archivos y pruebas de Matemática y Mi espacio](docs/qa-matematica-y-panel.md).
+
+Consulta también [simulacros personalizados, seguimiento y verificación responsive](docs/qa-simulacros-personalizados.md). Mi espacio muestra el tamaño real, las respuestas pendientes y los temas que reforzar del último simulacro de cada materia; las tendencias generales comparan únicamente intentos completos de 100 preguntas compatibles.
+
 ## Ciencias Naturales
+
+Matemática y Ciudadanía comparten también el sistema de práctica, simulacro, repaso e historial descrito a continuación.
 
 Las 100 preguntas originales incluyen identificador estable, área, subtema, dificultad, modalidad, cuatro alternativas, clave, explicación, concepto, consejo y etiquetas. Cada distractor tiene una explicación específica. Los cálculos incluyen procedimiento, fórmula y significado de variables cuando corresponde. Las posiciones correctas se distribuyen en 25 A, 25 B, 25 C y 25 D con un orden fijo mezclado; no cambian entre recargas.
 
@@ -78,20 +94,20 @@ Las 100 preguntas originales incluyen identificador estable, área, subtema, dif
 
 La práctica permite filtrar por área y tema, mezclar preguntas, confirmar la selección, leer la explicación y repasar errores. La primera respuesta permanece registrada. Los aciertos posteriores del repaso se cuentan aparte.
 
-El simulacro usa un intento independiente de 100 preguntas, sin límite de tiempo ni pistas. Las respuestas confirmadas son definitivas y se ocultan las correcciones, estadísticas de aciertos y explicaciones hasta entregar. Puede entregarse incompleto con confirmación; las pendientes no cuentan como aciertos. La revisión posterior incluye las 100 preguntas, también las no respondidas.
+El simulacro usa un intento independiente con la cantidad elegida, sin límite de tiempo ni pistas. Las preguntas se seleccionan al azar, sin repeticiones dentro del intento; las opciones y claves originales se conservan. Las respuestas confirmadas son definitivas y se ocultan las correcciones, estadísticas de aciertos y explicaciones hasta entregar. Puede entregarse incompleto con confirmación; las pendientes no cuentan como aciertos. La revisión posterior incluye todas las preguntas seleccionadas, también las no respondidas. Un intento pendiente se continúa antes de preparar otro, evitando perder respuestas.
 
 Se guarda el simulacro en curso y, al entregar, su resultado. La práctica se archiva al completar las 100 preguntas o mediante **Guardar este resultado**. El historial conserva los últimos 20 resultados y permite volver a su diagnóstico y a sus preguntas. Reiniciar la práctica no borra Matemática, el historial ni el simulacro.
 
 Las tablas, gráfica de movimiento, circuitos, red trófica y dos cuadros de Punnett son HTML/SVG locales. Los cuadros resueltos aparecen después de la corrección. Las tablas anchas tienen desplazamiento propio en celular.
 
-Los resultados comparan cuatro áreas y 14 subtemas. Las recomendaciones se basan en errores del intento seleccionado. Los porcentajes entre respondidas se distinguen de la puntuación sobre 100; las áreas y temas incompletos no reciben una clasificación definitiva. La escala 0–39, 40–59, 60–74, 75–89 y 90–100 es una orientación interna.
+Los resultados comparan las áreas y subtemas presentes en el intento. Las recomendaciones se basan en errores realmente respondidos. Los porcentajes entre respondidas se distinguen de los aciertos sobre el total seleccionado; las áreas y temas incompletos no reciben una clasificación definitiva. Un simulacro corto se identifica como muestra y no permite concluir dominio general del tema. La escala 0–39, 40–59, 60–74, 75–89 y 90–100 es una orientación interna para diagnósticos del banco completo.
 
 ### Persistencia y versiones del banco
 
 - Práctica: `beyond_ciencias_v1`; sesiones, simulacro e historial: `beyond_ciencias_v1_sesiones`.
 - `scienceBankVersion` identifica la revisión de contenido. Al cambiar enunciados, opciones, claves u orden del banco, aumenta esa versión.
 - No se reinterpretan respuestas de un banco incompatible: se inicia una práctica nueva y se descarta un simulacro incompatible en curso. Los resultados archivados conservan sus claves y categorías para consultar el resumen.
-- La revisión de preguntas de un resultado archivado exige una versión y claves compatibles. Un archivo anterior no recibe explicaciones de otra revisión del banco.
+- Cada archivo conserva las respuestas, identificadores, categorías y claves de sus preguntas seleccionadas. La revisión exige versión, identificadores y claves compatibles, sin depender de su posición en el intento. Los archivos anteriores de 100 preguntas siguen siendo consultables. Un archivo anterior no recibe explicaciones de otra revisión del banco.
 - La persistencia maneja datos inválidos y almacenamiento bloqueado; en este último caso se puede estudiar durante la sesión y la interfaz avisa de la limitación.
 
 ## Ciudadanía y valores

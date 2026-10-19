@@ -7,6 +7,15 @@
 .science-simulation-card h2 {font-size:23px;letter-spacing:-.5px;margin:10px 0}
 .science-simulation-card p {font-size:12px;color:var(--muted)}
 .science-simulation-card .science-actions {max-width:230px;justify-content:flex-end;margin:0}
+.science-exam-config {flex:0 0 285px;min-width:0;max-width:100%}
+.science-exam-config .science-actions {max-width:none;justify-content:flex-start;margin-top:14px;gap:12px}
+.exam-count-field {margin-bottom:12px}
+.exam-count-field label {display:block;font-size:12px;line-height:1.6;color:var(--ink);margin-bottom:7px}
+.exam-count-field select,.exam-count-field input {width:100%;min-height:44px;padding:10px 12px;background:#10151e;border:1px solid var(--line);border-radius:9px;color:var(--ink);font:inherit;font-size:13px}
+.science-simulation-card .exam-setup-help {font-size:11px;line-height:1.8;margin:12px 0 15px}
+#science-exam-setup>.button {width:100%;min-height:44px;justify-content:center}
+@media(max-width:1200px) {.science-exam-config {flex:auto;width:100%;max-width:420px}}
+@media(max-width:540px) {.science-exam-config {max-width:none}}
 .science-area-grid {display:grid;grid-template-columns:repeat(var(--study-area-count,4),minmax(0,1fr));gap:13px}
 .science-area-card {display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:20px;text-align:left;color:var(--ink);min-width:0}
 button.science-area-card:hover {border-color:var(--primary);background:#1c2330}

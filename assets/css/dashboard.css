@@ -1,0 +1,53 @@
+.dashboard-summary {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:25px 0 12px}
+.dashboard-summary article {min-width:0;padding:21px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.dashboard-summary article>span {display:block;color:var(--muted);font-size:11px;line-height:1.6}
+.dashboard-summary strong {display:block;font-size:28px;letter-spacing:-.8px;color:var(--primary);margin:12px 0 8px;line-height:1.3}
+.dashboard-summary strong small {font-size:13px;color:var(--muted);font-weight:400;letter-spacing:0}
+.dashboard-summary p,.dashboard-caption {font-size:10px;line-height:1.8;color:var(--muted)}
+.dashboard-plan {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.dashboard-task {display:flex;flex-direction:column;min-width:0;padding:23px;border:1px solid var(--line);border-top:2px solid #f2bd6966;border-radius:14px;background:linear-gradient(145deg,#20242c,var(--surface))}
+.dashboard-subject {color:var(--primary);font-size:10px;letter-spacing:.4px}
+.dashboard-task h3 {font-size:16px;line-height:1.5;margin:12px 0}
+.dashboard-task p {font-size:12px;line-height:1.9;color:var(--muted);margin-bottom:18px}
+.dashboard-task-actions {display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:auto}
+.dashboard-task .button,.dashboard-card-actions .button,.dashboard-exam .button {min-height:42px;font-size:11px;white-space:normal}
+.dashboard-caption {margin:16px 0 28px}
+.dashboard-card-details {border-top:1px solid var(--line);padding-top:17px;margin:17px 0 6px}
+.dashboard-card-details p {font-size:11px;line-height:1.8;color:var(--muted);margin:12px 0}
+.dashboard-card-details strong {color:var(--ink);font-weight:500}
+.dashboard-card-counts {display:flex;flex-wrap:wrap;gap:8px 15px}
+.dashboard-card-counts span {font-size:10px;color:var(--muted)}
+.dashboard-card-counts b {font-size:13px;color:var(--ink);margin-right:3px}
+.dashboard-card-actions {display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:15px 0}
+.dashboard-card-actions .text-link {font-size:11px;min-height:38px;display:inline-flex;align-items:center}
+.dashboard-card-details .dashboard-trend {padding:10px;border-radius:8px;background:#ffffff04;font-size:10px}
+.dashboard-exam {margin-top:16px;padding:13px;border:1px solid #f2bd6938;border-radius:9px;background:#f2bd6906}
+.dashboard-exam p {margin-top:0}
+.dashboard-exam strong {color:var(--primary)}
+.dashboard-last-exam {border-top:1px dashed var(--line);padding-top:13px;margin-top:15px}
+.dashboard-last-exam .text-link {font-size:11px;line-height:1.8}
+.dashboard-last-exam p {font-size:10px;margin-bottom:0}
+.dashboard-history {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:30px}
+.dashboard-result {display:flex;gap:16px;align-items:center;min-width:0;padding:18px;border-radius:13px;border:1px solid var(--line);background:var(--surface)}
+.dashboard-result:hover {border-color:var(--primary)}
+.dashboard-result>span:nth-child(2) {flex:1;min-width:0}
+.dashboard-result strong {display:block;font-size:12px;line-height:1.8;color:var(--ink);font-weight:600}
+.dashboard-result small {display:block;font-size:10px;color:var(--muted);line-height:1.8;margin-top:4px}
+.dashboard-result-score {color:var(--primary);font-size:24px;white-space:nowrap}
+.dashboard-result-score small {display:inline;font-size:12px;margin:0}
+.dashboard-result>span:last-child {color:var(--primary)}
+.dashboard-empty {padding:22px;border:1px dashed var(--line);border-radius:14px;color:var(--muted);font-size:12px;line-height:1.9;margin-bottom:25px}
+@media(max-width:1200px) {
+  .dashboard-summary {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dashboard-plan {grid-template-columns:1fr}
+}
+@media(max-width:680px) {
+  .dashboard-summary {gap:9px;margin-top:20px}
+  .dashboard-summary article {padding:16px}
+  .dashboard-summary article>span {font-size:10px}
+  .dashboard-summary strong {font-size:25px}
+  .dashboard-summary p {font-size:9px}
+  .dashboard-task {padding:21px}
+  .dashboard-history {grid-template-columns:1fr}
+  .dashboard-result {padding:16px;gap:13px}
+}

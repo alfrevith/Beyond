@@ -685,6 +685,12 @@ main {
   width:100%;
 }
 
+@media(min-width:1001px) {
+  .subject-card.available .card-footer > .button {
+    margin-top:20px;
+  }
+}
+
 .button-muted {
   color:#8792a5;
   background:#1c2330;

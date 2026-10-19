@@ -12,7 +12,7 @@ function setup(initial = {}, blocked = false) {
     getItem(key) { if (blocked) throw new Error('Storage blocked'); return values.get(key) ?? null; },
     setItem(key, value) { if (blocked) throw new Error('Storage blocked'); values.set(key, value); }
   } });
-  for (const file of ['data/math-questions.js', 'data/math-guides.js', ...[...DATA_FILES,...CITIZENSHIP_FILES].map(name => 'data/' + name + '.js'), 'data/subjects.js', 'storage.js', 'quiz.js']) {
+  for (const file of ['data/math-questions.js', 'data/math-guides.js', 'data/math-learning.js', ...[...DATA_FILES,...CITIZENSHIP_FILES].map(name => 'data/' + name + '.js'), 'data/subjects.js', 'storage.js', 'quiz.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context);
   }
   const app = context.window.Beyond;

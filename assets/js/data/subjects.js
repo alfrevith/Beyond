@@ -5,7 +5,10 @@ window.Beyond.subjects = [
     id: 'matematica', name: 'Matemática', shortName: 'Matemática', icon: 'math',
     color: 'amber', available: true, label: 'Piensa, resuelve y comprende.',
     description: 'De las fracciones a la geometría. Refuerza tus bases y descubre el porqué de cada respuesta.',
-    questions: window.Beyond.mathQuestions, guides: window.Beyond.mathGuides,
+    questions: window.Beyond.mathLearningQuestions, guides: window.Beyond.mathGuides,
+    advanced: true, sources: [], bankVersion: window.Beyond.mathBankVersion,
+    legacyUnversionedBankVersion: 'matematica-1',
+    study: {subtitle:'Resuelve con calma, confirma y comprende cada paso.',areas:'NÚMEROS · ÁLGEBRA · ESTADÍSTICA · GEOMETRÍA',title:'El resultado importa. Entenderlo, más.',areaLabel:'áreas matemáticas'},
     storageKey: 'beyond_matematica_v1', legacyKeys: ['avanzo_matematica_v1', 'esen_diagnostico_100_v1']
   },
   {

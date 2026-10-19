@@ -13,7 +13,8 @@ window.Beyond.storage = (() => {
 
   function normalize(raw, subject) {
     const state = empty(subject);
-    if (subject.bankVersion && (raw?.bankVersion !== subject.bankVersion || JSON.stringify(raw?.questionIds) !== JSON.stringify(state.questionIds))) return state;
+    const legacyMath = subject.id === 'matematica' && subject.bankVersion === 'matematica-1' && subject.legacyUnversionedBankVersion === subject.bankVersion && raw?.bankVersion === undefined && raw?.questionIds === undefined;
+    if (subject.bankVersion && !legacyMath && (raw?.bankVersion !== subject.bankVersion || JSON.stringify(raw?.questionIds) !== JSON.stringify(state.questionIds))) return state;
     if (!raw || !Array.isArray(raw.answers) || raw.answers.length !== state.answers.length) return state;
     state.answers = raw.answers.map((answer, i) => Number.isInteger(answer) && answer >= 0 && answer < subject.questions[i].opts.length ? answer : null);
     state.elapsed = Number.isFinite(raw.elapsed) ? Math.max(0, Math.floor(raw.elapsed)) : 0;
@@ -32,6 +33,14 @@ window.Beyond.storage = (() => {
         raw = null;
       }
     } catch (_) { available = false; }
+    // Keep the exact pre-migration payload recoverable before the versioned
+    // practice is first saved. Original legacy keys are never removed.
+    if (subject.id === 'matematica' && subject.bankVersion === 'matematica-1' && raw && raw.bankVersion === undefined && Array.isArray(raw.answers) && raw.answers.length === subject.questions.length) {
+      try {
+        const backupKey = subject.storageKey + '_respaldo_original';
+        if (localStorage.getItem(backupKey) === null) localStorage.setItem(backupKey, JSON.stringify(raw));
+      } catch (_) { available = false; }
+    }
     return normalize(raw, subject);
   }
 

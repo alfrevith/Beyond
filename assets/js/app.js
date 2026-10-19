@@ -85,21 +85,23 @@
   function renderLobby() {
     breadcrumb.textContent = 'Mi espacio de estudio';
     renderNavigation();
+    const dashboard = window.Beyond.renderStudyDashboard(window.Beyond.buildStudyDashboard([...quizzes.values()]));
     main.innerHTML = `${!storage.isAvailable() ? '<p class="storage-warning">Tu navegador no permite guardar el progreso. Las respuestas se conservarán solo durante esta sesión.</p>' : ''}
       <div class="page-heading"><div><div class="eyebrow">BEYOND · TU ESPACIO DE ESTUDIO</div><h1>Un esfuerzo<br>para mañana<span class="accent">.</span></h1><p>Pequeños pasos hoy. Más confianza para tu prueba AVANZO.</p></div><span class="quiet-badge">${icon('spark', 14)} Tú pones el ritmo</span></div>
-      <section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><span class="hero-label">${icon('spark', 13)} APRENDE CON CONFIANZA</span><h2 id="hero-title">Entenderlo cambia todo.</h2><p>Practica, descubre qué puedes mejorar y aprende de cada respuesta. Este es tu espacio para llegar con más confianza.</p><a class="button button-primary" href="#matematica">Empezar con Matemática ${icon('arrow', 15)}</a></div>${illustration()}</section>
+      ${dashboard.summary}${dashboard.plan}
       <div class="section-title"><div><h2>¿Qué vamos a estudiar?</h2><p>Elige una materia y construye tu propio camino.</p></div><span class="section-meta">${String(subjects.filter(subject => subject.available).length).padStart(2, '0')} de ${String(subjects.length).padStart(2, '0')} materias disponibles</span></div>
-      <div class="subject-grid">${subjects.map(subjectCard).join('')}</div>
+      <div class="subject-grid">${subjects.map(subject=>subjectCard(subject,dashboard)).join('')}</div>${dashboard.history}
       <section class="learning-strip" aria-labelledby="learning-title"><div><h3 id="learning-title">Aprender va más allá de acertar.</h3><p>Cada intento es una oportunidad para entender.</p></div><div class="steps"><div class="step"><span class="step-number">01</span><div><strong>Explora</strong><p>Repasa las ideas clave de cada tema.</p></div></div><div class="step"><span class="step-number">02</span><div><strong>Practica</strong><p>Resuelve sin presión y a tu ritmo.</p></div></div><div class="step"><span class="step-number">03</span><div><strong>Comprende</strong><p>Aprende del porqué de tu respuesta.</p></div></div></div></section>${notice()}`;
   }
 
-  function subjectCard(subject) {
+  function subjectCard(subject, dashboard) {
     const quiz = quizzes.get(subject.id);
     const stats = subject.advanced ? quiz.practiceStats() : quiz?.stats();
     return `<article class="subject-card ${subject.available ? 'available' : ''}">
       <div class="subject-card-top"><span class="subject-icon ${subject.color}">${icon(subject.icon, 25)}</span><span class="availability ${subject.available ? '' : 'soon'}">${subject.available ? '<span class="availability-dot"></span> Disponible' : icon('lock', 10) + ' Próximamente'}</span></div>
       <h3>${escape(subject.name)}</h3><p class="tagline">${escape(subject.label)}</p><p class="description">${escape(subject.description)}</p>
       <div class="card-meta">${subject.available ? `<span>${icon('list', 12)} ${stats.total} ejercicios</span><span>${icon('book', 12)} ${quiz.topics.length} temas</span>` : `<span>${icon('book', 12)} Una nueva guía está en camino</span>`}</div>
+      ${subject.available ? dashboard.cardDetails(subject.id) : ''}
       <div class="card-footer">${subject.available ? `<div><div class="card-progress"><span style="width:${percent(stats.done, stats.total)}%"></span></div><div class="progress-caption"><span>Tu progreso</span><span>${stats.done}/${stats.total}</span></div></div><a class="button button-primary" href="#${subject.id}">Explorar materia ${icon('arrow', 14)}</a>` : '<button class="button button-muted" disabled>Disponible próximamente</button>'}</div></article>`;
   }
 
@@ -218,6 +220,20 @@
   }
 
   main.addEventListener('click', event => {
+    const dashboardButton = event.target.closest('[data-dashboard-action]');
+    if (dashboardButton && !dashboardButton.disabled) {
+      const quiz = quizzes.get(dashboardButton.dataset.subject);
+      if (!quiz) return;
+      const action = dashboardButton.dataset.dashboardAction;
+      if (action === 'exam') { quiz.startExam(); navigate(`${quiz.subject.id}/simulacro`); }
+      else if (action === 'continue') { quiz.continuePractice(); navigate(`${quiz.subject.id}/practica`); }
+      else {
+        quiz.start(dashboardButton.dataset.topic || '');
+        if (action === 'review' && !quiz.review(dashboardButton.dataset.topic || '')) { notify('No hay errores disponibles para ese repaso.'); return; }
+        navigate(`${quiz.subject.id}/${action === 'report' ? 'resultados' : 'practica'}`);
+      }
+      return;
+    }
     const scienceButton = event.target.closest('[data-science-action]');
     if (scienceButton && activeQuiz?.subject.advanced) { learningUIs.get(activeQuiz.subject.id).handle(scienceButton); return; }
     const button = event.target.closest('[data-action]');

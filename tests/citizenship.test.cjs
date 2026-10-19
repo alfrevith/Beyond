@@ -7,7 +7,7 @@ function setup(initial={},blocked=false,version){
   const values=new Map(Object.entries(initial));
   const main={innerHTML:'',querySelector:()=>null};
   const c=vm.createContext({window:{matchMedia:()=>({matches:true}),scrollTo:()=>{}},location:{hash:'#ciudadania/practica'},document:{getElementById:()=>null},localStorage:{getItem:k=>{if(blocked)throw Error('blocked');return values.get(k)??null;},setItem:(k,v)=>{if(blocked)throw Error('blocked');values.set(k,v);}}});
-  for(const name of ['data/math-questions','data/math-guides',...[...SCIENCE,...DATA_FILES].map(f=>'data/'+f),'data/subjects','storage','quiz','science-session','science-ui'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/js',name+'.js'),'utf8'),c,{filename:name});
+  for(const name of ['data/math-questions','data/math-guides','data/math-learning',...[...SCIENCE,...DATA_FILES].map(f=>'data/'+f),'data/subjects','storage','quiz','science-session','science-ui'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/js',name+'.js'),'utf8'),c,{filename:name});
   const app=c.window.Beyond,subject=app.subjects[2];if(version)subject.bankVersion=version;
   const quiz=app.createLearningQuiz(subject),science=app.createLearningQuiz(app.subjects[1]),math=app.createQuiz(app.subjects[0]);
   const ui=app.createLearningUI({quiz,main,navigate:()=>{},notify:()=>{},flush:()=>{}});
@@ -44,7 +44,7 @@ test('Práctica, simulacro y progresos de las tres materias permanecen separados
   const {quiz,science,math,values}=setup();
   quiz.answer(quiz.questions[0].answer);quiz.tick(12);assert.equal(quiz.answer(2),false);
   science.answer((science.questions[0].answer+1)%4);math.answer(math.questions[0].answer);
-  quiz.startExam();quiz.answer((quiz.questions[0].answer+1)%4);quiz.tick(7);quiz.save();
+  quiz.startExam();quiz.select(0);quiz.answer((quiz.questions[0].answer+1)%4);quiz.tick(7);quiz.save();
   assert.equal(quiz.stats().hidden,true);assert.equal(quiz.stats().correct,0);assert.equal(quiz.reveal,false);
   const fresh=setup(Object.fromEntries(values));fresh.quiz.enter('simulacro');
   assert.equal(fresh.quiz.stats().done,1);assert.equal(fresh.quiz.state.elapsed,7);assert.equal(fresh.quiz.practiceStats().correct,1);
@@ -53,7 +53,7 @@ test('Práctica, simulacro y progresos de las tres materias permanecen separados
 });
 test('Repaso del simulacro y de su archivo registra mejora sin reescribir práctica ni historial',()=>{
   const {quiz}=setup();quiz.answer(quiz.questions[0].answer);const practice=plain(quiz.state.answers);
-  quiz.startExam();quiz.answer((quiz.questions[0].answer+1)%4);quiz.submitExam();const record=plain(quiz.history[0]);
+  quiz.startExam();quiz.select(0);quiz.answer((quiz.questions[0].answer+1)%4);quiz.submitExam();const record=plain(quiz.history[0]);
   assert.equal(quiz.openHistory(record.id),true);assert.equal(quiz.review(),true);quiz.answer(quiz.questions[0].answer);
   assert.equal(quiz.reviewStats.correct,1);assert.deepEqual(plain(quiz.history[0]),record);quiz.start();assert.deepEqual(plain(quiz.state.answers),practice);
 });
@@ -66,7 +66,7 @@ test('Áreas, temas, mezcla y recorrido completo conservan exactamente los cien 
   assert.equal(quiz.stats().correct,100);assert.equal(quiz.history.length,1);assert.equal(quiz.history[0].kind,'practica');
 });
 test('Historial, guardas de versión, reinicio y almacenamiento bloqueado son seguros en Ciudadanía',()=>{
-  const {quiz,values}=setup();quiz.answer(0);quiz.savePractice();quiz.startExam();quiz.answer(1);quiz.submitExam();
+  const {quiz,values}=setup();quiz.answer(0);quiz.savePractice();quiz.startExam();quiz.select(0);quiz.answer(1);quiz.submitExam();
   const history=plain(quiz.history);quiz.reset();assert.equal(quiz.stats().done,0);assert.deepEqual(plain(quiz.history),history);assert.equal(quiz.exam.submitted,true);
   const newer=setup(Object.fromEntries(values),false,'ciudadania-2');assert.equal(newer.quiz.practiceStats().done,0);assert.equal(newer.quiz.exam,null);assert.equal(newer.quiz.history.length,2);
   newer.quiz.openHistory(history[0].id);assert.equal(newer.quiz.historyCompatible,false);assert.equal(newer.quiz.review(),false);
@@ -82,11 +82,11 @@ test('La interfaz compartida renderiza las 100 preguntas y oculta correcciones y
     if(q.visual)assert.ok(main.innerHTML.includes(q.visual.caption.replaceAll('&','&amp;')));
     assert.ok(!main.innerHTML.includes('#ciencias'));assert.ok(!main.innerHTML.includes('undefined'));
   }
-  quiz.startExam();quiz.select(15);quiz.answer(0);ui.render('simulacro');assert.ok(!main.innerHTML.includes('id="feedback"'));assert.ok(!main.innerHTML.includes('Consultar fuentes y contexto'));assert.ok(!main.innerHTML.includes('class="choice science-choice correct'));
+  quiz.startExam();quiz.select(0);quiz.select(15);quiz.answer(0);ui.render('simulacro');assert.ok(!main.innerHTML.includes('id="feedback"'));assert.ok(!main.innerHTML.includes('Consultar fuentes y contexto'));assert.ok(!main.innerHTML.includes('class="choice science-choice correct'));
   quiz.submitExam();ui.render('simulacro');assert.ok(main.innerHTML.includes('id="feedback"'));assert.ok(main.innerHTML.includes('Consultar fuentes y contexto'));
 });
 test('Resultados y enlaces profundos del historial de Ciudadanía apuntan solo a su materia',()=>{
-  const {quiz,ui,main,c}=setup();quiz.startExam();quiz.answer(0);quiz.submitExam();const id=quiz.history[0].id;
+  const {quiz,ui,main,c}=setup();quiz.startExam();quiz.select(0);quiz.answer(0);quiz.submitExam();const id=quiz.history[0].id;
   c.location.hash='#ciudadania/resultados/'+id;ui.render('resultados');assert.ok(main.innerHTML.includes('#ciudadania/revision/'+id));assert.ok(!main.innerHTML.includes('#ciencias'));assert.ok(main.innerHTML.includes('Tu rendimiento por área'));
   c.location.hash='#ciudadania/revision/'+id;ui.render('revision');assert.equal(quiz.context,'history');assert.equal(quiz.answer(0),false);
 });

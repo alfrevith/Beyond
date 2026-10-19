@@ -4,7 +4,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const port = Number(process.env.PORT || 4173);
-const mime = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' };
+const mime = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png' };
 
 http.createServer(async (request, response) => {
   if (!['GET', 'HEAD'].includes(request.method)) {
@@ -15,7 +15,7 @@ http.createServer(async (request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
     const target = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
     const relative = path.relative(root, target);
-    if (relative.startsWith('..') || path.isAbsolute(relative) || !['index.html', 'diagnostico_esen_100_preguntas.html'].includes(relative) && !relative.startsWith('assets' + path.sep)) {
+    if (relative.startsWith('..') || path.isAbsolute(relative) || relative !== 'index.html' && !relative.startsWith('assets' + path.sep)) {
       response.writeHead(404).end('No encontrado');
       return;
     }

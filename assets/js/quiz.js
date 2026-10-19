@@ -1,12 +1,12 @@
-window.Avanzo = window.Avanzo || {};
-window.Avanzo.createQuiz = (subject) => {
-  let state = window.Avanzo.storage.load(subject);
+window.Beyond = window.Beyond || {};
+window.Beyond.createQuiz = (subject) => {
+  let state = window.Beyond.storage.load(subject);
   let mode = 'all';
   let filter = '';
   let reviewAnswers = {};
   const questions = subject.questions;
   const topics = [...new Set(questions.map(question => question.cat))];
-  const save = () => window.Avanzo.storage.save(subject, state);
+  const save = () => window.Beyond.storage.save(subject, state);
 
   function stats() {
     const done = state.answers.filter(answer => answer !== null).length;
@@ -68,7 +68,7 @@ window.Avanzo.createQuiz = (subject) => {
   }
 
   function reset() {
-    state = window.Avanzo.storage.empty(subject);
+    state = window.Beyond.storage.empty(subject);
     mode = 'all'; filter = ''; reviewAnswers = {};
     save();
   }

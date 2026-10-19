@@ -1,4 +1,6 @@
-# AVANZO · Mi espacio de estudio
+# Beyond
+
+**Un esfuerzo para mañana.**
 
 Aplicación estática de estudio en español para PC y celular. Incluye un lobby con Matemática disponible y espacios reservados para Ciencias y Ciudadanía y valores.
 
@@ -12,16 +14,15 @@ npm run dev
 
 Abre la dirección que imprime el servidor: `http://127.0.0.1:4173`.
 
-La entrada anterior `diagnostico_esen_100_preguntas.html` también abre la aplicación. Ambos HTML contienen únicamente la estructura compartida; las preguntas y la lógica viven en `assets/`. Mantén las dos entradas iguales si cambias esa estructura.
+`index.html` es la única entrada de la aplicación. Las preguntas y la lógica viven en `assets/`. La identidad visual usa el logo proporcionado, una paleta oscura y acentos cálidos.
 
 ## Organización
 
 ```text
 index.html                         Entrada principal y estructura accesible
-diagnostico_esen_100_preguntas.html Entrada anterior compatible
 assets/
   css/styles.css                   Diseño y adaptación a distintos tamaños
-  favicon.svg                      Identidad visual
+  images/beyond-logo.png            Logo e icono del navegador
   js/
     data/math-questions.js         100 preguntas originales, intactas
     data/math-guides.js            22 guías: concepto, regla, ejemplo y consejo
@@ -44,13 +45,13 @@ tests/                             Pruebas del banco, progreso y motor
 - Guardado local de respuestas, posición y tiempo. Reinicio con confirmación.
 - Navegación por teclado, foco visible y menú de preguntas plegable en celular.
 
-El almacenamiento pertenece al navegador y al origen. Cambiar de navegador, usar modo privado, borrar datos o pasar de `file://` al servidor local puede dar lugar a un progreso distinto. Se recupera la clave anterior `esen_diagnostico_100_v1` cuando es accesible desde el mismo origen. No se borra el registro anterior.
+El almacenamiento pertenece al navegador y al origen. Cambiar de navegador, usar modo privado, borrar datos o pasar de `file://` al servidor local puede dar lugar a un progreso distinto. Las claves actuales usan el prefijo `beyond_`; se recuperan también los progresos de versiones anteriores cuando son accesibles desde el mismo origen, sin borrar esos registros.
 
 ## Agregar Ciencias o Ciudadanía y valores
 
 1. Crea su archivo de preguntas siguiendo el formato `{ cat, stem, opts, answer, explain }`. `answer` es el índice correcto, empezando en cero.
 2. Crea las guías por categoría con `{ idea, rule, example, tip }`.
-3. Carga ambos archivos en las dos entradas HTML, antes de `subjects.js`.
+3. Carga ambos archivos en `index.html`, antes de `subjects.js`.
 4. En `assets/js/data/subjects.js`, asigna los nuevos bancos a la materia y cambia `available` a `true`. Conserva su clave propia de almacenamiento.
 5. Ejecuta las verificaciones y recorre la nueva materia en el navegador. El lobby, las preguntas y los resultados se generan desde el registro de materias y el tamaño del banco.
 
@@ -67,4 +68,4 @@ La revisión en navegador cubrió el lobby, la portada de Matemática, las pregu
 
 ## Alcance del contenido
 
-Las 100 preguntas de Matemática se conservaron del diagnóstico original preparado para ESEN. Se añadieron guías breves y una interfaz orientada al nuevo espacio AVANZO. Aún hace falta revisar y ampliar ese banco contra el temario oficial de AVANZO; este proyecto no afirma cobertura completa ni es una prueba oficial. Ciencias y Ciudadanía y valores están preparadas en la estructura, sin preguntas publicadas todavía.
+Las 100 preguntas de Matemática se conservaron del diagnóstico original. Beyond añade guías breves y una interfaz para estudiar. Aún hace falta revisar y ampliar ese banco contra el temario oficial de AVANZO; este proyecto no afirma cobertura completa ni es una prueba oficial. Ciencias y Ciudadanía y valores están preparadas en la estructura, sin preguntas publicadas todavía.

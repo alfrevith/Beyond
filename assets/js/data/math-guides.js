@@ -1,6 +1,6 @@
-window.Avanzo = window.Avanzo || {};
+window.Beyond = window.Beyond || {};
 /* Each guide follows the same topic name as its questions. */
-window.Avanzo.mathGuides = {
+window.Beyond.mathGuides = {
   'Conjuntos y operaciones': {
     idea: 'Los naturales, enteros y racionales están contenidos en los reales. Un racional puede escribirse como fracción de enteros; un irracional, como √2, no. El valor absoluto mide distancia al cero.',
     rule: 'Orden de operaciones: paréntesis → potencias y raíces → multiplicación y división → suma y resta. En cada nivel, avanza de izquierda a derecha.',

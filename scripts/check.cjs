@@ -17,5 +17,4 @@ const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 for (const match of html.matchAll(/(?:src|href)="(assets\/[^"]+)"/g)) {
   if (!fs.existsSync(path.join(root, match[1]))) throw new Error(`Falta un recurso: ${match[1]}`);
 }
-if (html !== fs.readFileSync(path.join(root, 'diagnostico_esen_100_preguntas.html'), 'utf8')) throw new Error('La entrada de compatibilidad no coincide con index.html.');
-console.log(`Sintaxis correcta en ${files.length} archivos. Recursos y entrada anterior verificados.`);
+console.log(`Sintaxis correcta en ${files.length} archivos. Recursos de Beyond verificados.`);

@@ -1,5 +1,5 @@
-window.Avanzo = window.Avanzo || {};
-window.Avanzo.mathQuestions = [
+window.Beyond = window.Beyond || {};
+window.Beyond.mathQuestions = [
   {
     "cat": "Conjuntos y operaciones",
     "stem": "¿Cuál número es irracional?",

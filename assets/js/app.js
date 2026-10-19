@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const { subjects, createQuiz, storage } = window.Avanzo;
+  const { subjects, createQuiz, storage } = window.Beyond;
   const quizzes = new Map(subjects.filter(subject => subject.available).map(subject => [subject.id, createQuiz(subject)]));
   const main = document.getElementById('main');
   const navigation = document.getElementById('navigation');
@@ -40,21 +40,7 @@
   }
 
   function illustration() {
-    return `<div class="hero-art" aria-hidden="true"><svg viewBox="0 0 280 240" fill="none">
-      <circle cx="149" cy="117" r="89" fill="#e4def7"/><circle cx="149" cy="117" r="111" stroke="#d8cff1" stroke-dasharray="3 8"/>
-      <path d="m54 175 111-36 70 41-109 38-72-43Z" fill="#c7b9e9"/><path d="m54 167 111-35 70 40-109 38-72-43Z" fill="#fff"/>
-      <path d="m54 161 111-36 70 41-109 38-72-43Z" fill="#8b73c7"/><path d="m126 204 109-38v10l-109 39v-11Z" fill="#8067bb"/>
-      <rect x="80" y="43" width="119" height="134" rx="12" transform="rotate(-12 80 43)" fill="#d0c4ec"/>
-      <rect x="75" y="37" width="119" height="134" rx="12" transform="rotate(-12 75 37)" fill="#fff"/>
-      <path d="m94 61 63-13m-61 24 37-8" stroke="#e1daf0" stroke-width="4" stroke-linecap="round"/>
-      <path d="m104 135 70-15m-70 15-12-53" stroke="#c8bce3" stroke-width="1.5"/>
-      <path d="m104 120 13-21 21 7 22-33" stroke="#8c73c7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="117" cy="99" r="4" fill="#a38bcc"/><circle cx="138" cy="106" r="4" fill="#a38bcc"/><circle cx="160" cy="73" r="5" fill="#6854c9"/>
-      <rect x="185" y="102" width="49" height="49" rx="13" transform="rotate(13 185 102)" fill="#cbbdec"/><path d="m200 119 14 3m-6-8-3 14" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="59" cy="111" r="20" fill="#faf8ff"/><path d="m52 111 5 5 9-10" stroke="#a38bcc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="m218 35 3 9 9 3-9 3-3 9-3-9-9-3 9-3 3-9Z" fill="#b6a2dc"/><circle cx="65" cy="55" r="4" fill="#d0c0e9"/><circle cx="242" cy="186" r="4" fill="#bea9de"/>
-      <path d="m71 207 2 6 6 2-6 2-2 6-2-6-6-2 6-2 2-6Z" fill="#b6a2dc"/>
-    </svg></div>`;
+    return `<div class="hero-art" aria-hidden="true"><span class="mascot-orbit"></span><span class="mascot-spark mascot-spark-one">✦</span><img class="hero-mascot" src="assets/images/beyond-logo.png" alt="" width="240" height="240"><span class="mascot-spark mascot-spark-two">✧</span><span class="mascot-caption">UN PASO MÁS ALLÁ</span></div>`;
   }
 
   function notify(message) {
@@ -99,7 +85,7 @@
     breadcrumb.textContent = 'Mi espacio de estudio';
     renderNavigation();
     main.innerHTML = `${!storage.isAvailable() ? '<p class="storage-warning">Tu navegador no permite guardar el progreso. Las respuestas se conservarán solo durante esta sesión.</p>' : ''}
-      <div class="page-heading"><div><div class="eyebrow">UN POCO MÁS CERCA DE TU META</div><h1>Hoy es un buen día<br>para aprender<span class="accent">.</span></h1><p>Tu preparación para AVANZO empieza con un pequeño paso.</p></div><span class="quiet-badge">${icon('spark', 14)} Tú pones el ritmo</span></div>
+      <div class="page-heading"><div><div class="eyebrow">BEYOND · TU ESPACIO DE ESTUDIO</div><h1>Un esfuerzo<br>para mañana<span class="accent">.</span></h1><p>Pequeños pasos hoy. Más confianza para tu prueba AVANZO.</p></div><span class="quiet-badge">${icon('spark', 14)} Tú pones el ritmo</span></div>
       <section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><span class="hero-label">${icon('spark', 13)} APRENDE CON CONFIANZA</span><h2 id="hero-title">Entenderlo cambia todo.</h2><p>Practica, descubre qué puedes mejorar y aprende de cada respuesta. Este es tu espacio para llegar con más confianza.</p><a class="button button-primary" href="#matematica">Empezar con Matemática ${icon('arrow', 15)}</a></div>${illustration()}</section>
       <div class="section-title"><div><h2>¿Qué vamos a estudiar?</h2><p>Elige una materia y construye tu propio camino.</p></div><span class="section-meta">${String(subjects.filter(subject => subject.available).length).padStart(2, '0')} de ${String(subjects.length).padStart(2, '0')} materias disponibles</span></div>
       <div class="subject-grid">${subjects.map(subjectCard).join('')}</div>
@@ -126,7 +112,7 @@
     const stats = quiz.stats();
     const hasProgress = stats.done > 0 || quiz.state.elapsed > 0;
     main.innerHTML = `<div class="page-heading"><div><div class="eyebrow">TU GUÍA DE ESTUDIO</div><h1>${escape(subject.name)}<span class="accent">.</span></h1><p>Primero comprende la idea. Después, ponla en práctica.</p></div><a class="button button-light" href="#inicio">${icon('left', 14)} Volver al lobby</a></div>
-      <div class="math-overview"><section class="hero subject-hero"><div class="hero-copy"><span class="subject-icon">${icon(subject.icon, 25)}</span><span class="hero-label">SIN PRISA, CON PROPÓSITO</span><h2>Tu siguiente respuesta<br>empieza por entender.</h2><p>Lee las guías, resuelve los ejercicios y recibe una explicación en cada respuesta. Puedes saltar preguntas y volver después.</p><div class="mini-stats"><div class="mini-stat"><b>${stats.total}</b><span>ejercicios</span></div><div class="mini-stat"><b>${quiz.topics.length}</b><span>temas</span></div><div class="mini-stat"><b>∞</b><span>sin límite de tiempo</span></div></div><button class="button button-primary" data-action="practice">${hasProgress ? 'Continuar práctica' : 'Comenzar práctica'} ${icon('arrow', 15)}</button></div></section>
+      <div class="subject-overview"><section class="hero subject-hero"><div class="hero-copy"><span class="subject-icon">${icon(subject.icon, 25)}</span><span class="hero-label">SIN PRISA, CON PROPÓSITO</span><h2>Tu siguiente respuesta<br>empieza por entender.</h2><p>Lee las guías, resuelve los ejercicios y recibe una explicación en cada respuesta. Puedes saltar preguntas y volver después.</p><div class="mini-stats"><div class="mini-stat"><b>${stats.total}</b><span>ejercicios</span></div><div class="mini-stat"><b>${quiz.topics.length}</b><span>temas</span></div><div class="mini-stat"><b>∞</b><span>sin límite de tiempo</span></div></div><button class="button button-primary" data-action="practice">${hasProgress ? 'Continuar práctica' : 'Comenzar práctica'} ${icon('arrow', 15)}</button></div></section>
       <aside class="progress-panel" aria-label="Tu progreso en ${escape(subject.name)}"><div class="panel-heading">Tu recorrido ${icon('chart', 20)}</div><div class="progress-value">${percent(stats.done, stats.total)}<small>%</small></div><div class="progress-track" role="progressbar" aria-label="Preguntas respondidas" aria-valuenow="${stats.done}" aria-valuemin="0" aria-valuemax="${stats.total}"><span style="width:${percent(stats.done, stats.total)}%"></span></div><p>${stats.done} de ${stats.total} preguntas respondidas</p><div class="progress-counts"><div><b class="positive">${stats.correct}</b><span>Aciertos</span></div><div><b class="negative">${stats.wrong}</b><span>Por reforzar</span></div><div><b>${stats.pending}</b><span>Pendientes</span></div></div><a class="text-link" href="#${subject.id}/resultados">Ver mi diagnóstico ${icon('arrow', 14)}</a></aside></div>
       <div class="section-title"><div><h2>Una idea clara, un tema a la vez.</h2><p>Abre una guía para repasar o practicar ese tema.</p></div><span class="section-meta">${quiz.topics.length} guías rápidas</span></div>
       <div class="topic-grid">${quiz.topics.map((topic, i) => {
@@ -175,7 +161,7 @@
     const topics = quiz.topics.map(quiz.topicStats);
     const weak = topics.filter(topic => topic.wrong > 0).sort((a, b) => b.wrong / b.done - a.wrong / a.done || b.wrong - a.wrong).slice(0, 3);
     main.innerHTML = `<div class="page-heading"><div><div class="eyebrow">CADA INTENTO TE ENSEÑA ALGO</div><h1>Tu mapa de aprendizaje<span class="accent">.</span></h1><p>Descubre tus avances y elige qué reforzar después.</p></div><a class="button button-light" href="#${quiz.subject.id}">${icon('left', 14)} Volver a la guía</a></div>
-      <section class="result-hero"><div class="score-ring"><svg viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="65" stroke="#ded6f1" stroke-width="7"/><circle cx="75" cy="75" r="65" stroke="#8a71c7" stroke-width="7" stroke-linecap="round" stroke-dasharray="${408.4 * stats.correct / stats.total} 408.4"/></svg><div><strong>${stats.correct}<span class="score-total">/${stats.total}</span></strong><small>aciertos iniciales</small></div></div><div><div class="eyebrow">${stats.done === 0 ? 'EL PRIMER PASO ESTÁ POR VENIR' : stats.pending ? 'TU RECORRIDO SIGUE' : 'DIAGNÓSTICO COMPLETADO'}</div><h2>${stats.done === 0 ? 'Todo empieza con un intento.' : stats.wrong ? 'Ya sabes por dónde continuar.' : 'Cada idea comprendida cuenta.'}</h2><p>${stats.done === 0 ? 'Todavía no has respondido preguntas. Empieza a practicar para descubrir tus fortalezas y los temas que puedes reforzar.' : `Has respondido ${stats.done} de ${stats.total} ejercicios. ${stats.pending ? `Quedan ${stats.pending} pendientes. ` : ''}Tu precisión entre las preguntas respondidas es del ${percent(stats.correct, stats.done)}%. Tiempo de estudio: ${formatTime(quiz.state.elapsed)}.`}</p><div class="quiz-tools"><button class="button button-primary" data-action="practice">${stats.pending ? 'Continuar práctica' : 'Revisar preguntas'} ${icon('arrow', 14)}</button><button class="button button-light" data-action="review" ${stats.wrong ? '' : 'disabled'}>${icon('reset', 14)} Repasar errores</button></div></div></section>
+      <section class="result-hero"><div class="score-ring"><svg viewBox="0 0 150 150" aria-hidden="true"><circle cx="75" cy="75" r="65" stroke="#34323b" stroke-width="7"/><circle cx="75" cy="75" r="65" stroke="#f2bd69" stroke-width="7" stroke-linecap="round" stroke-dasharray="${408.4 * stats.correct / stats.total} 408.4"/></svg><div><strong>${stats.correct}<span class="score-total">/${stats.total}</span></strong><small>aciertos iniciales</small></div></div><div><div class="eyebrow">${stats.done === 0 ? 'EL PRIMER PASO ESTÁ POR VENIR' : stats.pending ? 'TU RECORRIDO SIGUE' : 'DIAGNÓSTICO COMPLETADO'}</div><h2>${stats.done === 0 ? 'Todo empieza con un intento.' : stats.wrong ? 'Ya sabes por dónde continuar.' : 'Cada idea comprendida cuenta.'}</h2><p>${stats.done === 0 ? 'Todavía no has respondido preguntas. Empieza a practicar para descubrir tus fortalezas y los temas que puedes reforzar.' : `Has respondido ${stats.done} de ${stats.total} ejercicios. ${stats.pending ? `Quedan ${stats.pending} pendientes. ` : ''}Tu precisión entre las preguntas respondidas es del ${percent(stats.correct, stats.done)}%. Tiempo de estudio: ${formatTime(quiz.state.elapsed)}.`}</p><div class="quiz-tools"><button class="button button-primary" data-action="practice">${stats.pending ? 'Continuar práctica' : 'Revisar preguntas'} ${icon('arrow', 14)}</button><button class="button button-light" data-action="review" ${stats.wrong ? '' : 'disabled'}>${icon('reset', 14)} Repasar errores</button></div></div></section>
       <div class="result-counters"><div class="result-counter"><b class="positive">${stats.correct}</b><span>Respuestas correctas</span></div><div class="result-counter"><b class="negative">${stats.wrong}</b><span>Oportunidades de mejora</span></div><div class="result-counter"><b>${stats.pending}</b><span>Preguntas pendientes</span></div><div class="result-counter"><b>${percent(stats.done, stats.total)}%</b><span>Del recorrido completado</span></div></div>
       <div class="section-title"><div><h2>Tu siguiente paso</h2><p>Repasa las ideas detrás de los ejercicios que más costaron.</p></div></div>
       ${weak.length ? `<div class="recommendations">${weak.map((topic, i) => `<article class="recommendation"><span class="topic-index">${String(i + 1).padStart(2, '0')}</span><h3>${escape(topic.topic)}</h3><p>${topic.wrong} de ${topic.done} respuestas para reforzar${topic.pending ? ` · ${topic.pending} pendientes` : ''}.</p><button class="text-link" data-action="open-guide" data-topic="${escape(topic.topic)}">Repasar la idea ${icon('arrow', 13)}</button></article>`).join('')}</div>` : `<p class="empty-note">${stats.done ? 'No tienes errores registrados. Continúa con las preguntas pendientes o explora las guías para consolidar lo aprendido.' : 'Tus recomendaciones aparecerán aquí cuando respondas los primeros ejercicios.'}</p>`}
@@ -201,7 +187,7 @@
     if (!activeQuiz || (view && !['practica', 'resultados'].includes(view))) {
       route = 'inicio'; activeQuiz = null;
       renderLobby();
-      document.title = 'AVANZO · Mi espacio de estudio';
+      document.title = 'Beyond · Un esfuerzo para mañana.';
     } else {
       const name = activeQuiz.subject.name;
       breadcrumb.innerHTML = `<a href="#inicio">Mi espacio</a><span class="breadcrumb-separator">/</span><a href="#${subjectId}">${escape(name)}</a>${view ? `<span class="breadcrumb-separator">/</span>${view === 'practica' ? 'Práctica' : 'Resultados'}` : ''}`;
@@ -209,7 +195,7 @@
       if (view === 'practica') renderQuestion(activeQuiz);
       else if (view === 'resultados') renderReport(activeQuiz);
       else renderSubject(activeQuiz);
-      document.title = `${name}${view ? view === 'practica' ? ' · Práctica' : ' · Resultados' : ''} · AVANZO`;
+      document.title = `${name}${view ? view === 'practica' ? ' · Práctica' : ' · Resultados' : ''} · Beyond`;
     }
     lastTick = Date.now();
     window.scrollTo({ top: 0, behavior: 'instant' });

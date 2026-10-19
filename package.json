@@ -1,8 +1,8 @@
 {
-  "name": "avanzo-estudio",
+  "name": "beyond-estudio",
   "version": "1.0.0",
   "private": true,
-  "description": "Guías de estudio y práctica para AVANZO, El Salvador",
+  "description": "Beyond. Un esfuerzo para mañana. Guías de estudio para AVANZO, El Salvador.",
   "scripts": {
     "dev": "node scripts/serve.cjs",
     "test": "node --test tests/*.test.cjs",

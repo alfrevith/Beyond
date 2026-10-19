@@ -13,7 +13,7 @@ function setup(initial = {}, blocked = false) {
   for (const file of ['data/math-questions.js', 'data/math-guides.js', 'data/subjects.js', 'storage.js', 'quiz.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context);
   }
-  const app = context.window.Avanzo;
+  const app = context.window.Beyond;
   const subject = app.subjects[0];
   return { app, subject, values, quiz: app.createQuiz(subject) };
 }
@@ -74,10 +74,24 @@ test('Se recuperan el tiempo, el índice y las respuestas anteriores de ESEN', (
   assert.ok(values.has(subject.storageKey));
 });
 
+test('Beyond recupera el progreso previo y prefiere su propio guardado al reiniciar', () => {
+  const answers = Array(100).fill(null); answers[1] = 1;
+  const previous = JSON.stringify({ answers, elapsed: 45, index: 1 });
+  const { app, subject, quiz, values } = setup({ avanzo_matematica_v1: previous });
+  assert.equal(quiz.state.elapsed, 45);
+  assert.equal(quiz.stats().done, 1);
+  assert.equal(subject.storageKey, 'beyond_matematica_v1');
+  quiz.save();
+  assert.ok(values.has('beyond_matematica_v1'));
+  quiz.reset();
+  assert.equal(app.createQuiz(subject).stats().done, 0);
+  assert.equal(values.get('avanzo_matematica_v1'), previous);
+});
+
 test('Datos dañados, respuestas imposibles y almacenamiento bloqueado no rompen la práctica', () => {
-  assert.equal(setup({ avanzo_matematica_v1: '{malformed' }).quiz.stats().done, 0);
+  assert.equal(setup({ beyond_matematica_v1: '{malformed' }).quiz.stats().done, 0);
   const answers = Array(100).fill(null); answers[0] = -1; answers[1] = 9; answers[2] = '0';
-  const { quiz } = setup({ avanzo_matematica_v1: JSON.stringify({ answers, elapsed: -20, index: 400 }) });
+  const { quiz } = setup({ beyond_matematica_v1: JSON.stringify({ answers, elapsed: -20, index: 400 }) });
   assert.equal(quiz.stats().done, 0);
   assert.equal(quiz.state.elapsed, 0);
   assert.equal(quiz.state.index, 99);
@@ -107,7 +121,7 @@ test('Completar el banco, persistir y reiniciar produce resultados coherentes', 
 test('El motor admite otra materia y un banco de tamaño diferente sin mezclar progresos', () => {
   const { app, subject, quiz, values } = setup();
   quiz.answer(0);
-  const science = { ...subject, id: 'ciencias', storageKey: 'avanzo_ciencias_v1', legacyKey: undefined, questions: subject.questions.slice(4, 6) };
+  const science = { ...subject, id: 'ciencias', storageKey: 'beyond_ciencias_v1', legacyKeys: [], questions: subject.questions.slice(4, 6) };
   const second = app.createQuiz(science);
   assert.equal(second.stats().total, 2);
   assert.equal(second.stats().done, 0);

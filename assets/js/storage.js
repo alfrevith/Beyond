@@ -1,5 +1,5 @@
-window.Avanzo = window.Avanzo || {};
-window.Avanzo.storage = (() => {
+window.Beyond = window.Beyond || {};
+window.Beyond.storage = (() => {
   let available = true;
 
   function empty(subject) {
@@ -18,15 +18,12 @@ window.Avanzo.storage = (() => {
   function load(subject) {
     let raw = null;
     try {
-      const saved = localStorage.getItem(subject.storageKey);
-      if (saved) {
-        try { raw = JSON.parse(saved); } catch (_) { /* Try the legacy bank below. */ }
-      }
-      if ((!raw || !Array.isArray(raw.answers)) && subject.legacyKey) {
-        const legacy = localStorage.getItem(subject.legacyKey);
-        if (legacy) {
-          try { raw = JSON.parse(legacy); } catch (_) { /* Invalid data starts a fresh session. */ }
-        }
+      for (const key of [subject.storageKey, ...(subject.legacyKeys || [])]) {
+        const saved = localStorage.getItem(key);
+        if (!saved) continue;
+        try { raw = JSON.parse(saved); } catch (_) { continue; }
+        if (raw && Array.isArray(raw.answers) && raw.answers.length === subject.questions.length) break;
+        raw = null;
       }
     } catch (_) { available = false; }
     return normalize(raw, subject);

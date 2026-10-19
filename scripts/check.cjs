@@ -18,3 +18,9 @@ for (const match of html.matchAll(/(?:src|href)="(assets\/[^"]+)"/g)) {
   if (!fs.existsSync(path.join(root, match[1]))) throw new Error(`Falta un recurso: ${match[1]}`);
 }
 console.log(`Sintaxis correcta en ${files.length} archivos. Recursos de Beyond verificados.`);
+const {validateScience} = require('./validate-science.cjs');
+const science = validateScience();
+console.log(`Ciencias: ${science.questions} preguntas, ${science.topics} temas y distribuciones verificadas.`);
+const {validateCitizenship} = require('./validate-citizenship.cjs');
+const citizenship = validateCitizenship();
+console.log(`Ciudadanía: ${citizenship.questions} preguntas, ${citizenship.topics} temas y distribuciones verificadas.`);

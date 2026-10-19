@@ -2,7 +2,7 @@
   'use strict';
 
   const { subjects, createQuiz, storage } = window.Beyond;
-  const quizzes = new Map(subjects.filter(subject => subject.available).map(subject => [subject.id, createQuiz(subject)]));
+  const quizzes = new Map(subjects.filter(subject => subject.available).map(subject => [subject.id, subject.advanced ? window.Beyond.createLearningQuiz(subject) : createQuiz(subject)]));
   const main = document.getElementById('main');
   const navigation = document.getElementById('navigation');
   const breadcrumb = document.getElementById('breadcrumb');
@@ -13,6 +13,7 @@
   let lastSave = Date.now();
   let toastTimeout;
   let storageNotified = false;
+  const learningUIs = new Map([...quizzes].filter(([,quiz])=>quiz.subject.advanced).map(([id,quiz])=>[id,window.Beyond.createLearningUI({quiz,main,navigate,notify,flush:updateTime})]));
 
   const escape = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   const percent = (part, total) => total ? Math.round(100 * part / total) : 0;
@@ -61,7 +62,7 @@
 
   function updateTime() {
     const now = Date.now();
-    if (activeQuiz && route.endsWith('/practica') && !document.hidden) {
+    if (activeQuiz && ['/practica','/simulacro','/revision'].some(suffix => route.split('/').slice(0,2).join('/').endsWith(suffix)) && !document.hidden) {
       const seconds = Math.floor((now - lastTick) / 1000);
       activeQuiz.tick(seconds);
       lastTick += seconds * 1000;
@@ -94,7 +95,7 @@
 
   function subjectCard(subject) {
     const quiz = quizzes.get(subject.id);
-    const stats = quiz?.stats();
+    const stats = subject.advanced ? quiz.practiceStats() : quiz?.stats();
     return `<article class="subject-card ${subject.available ? 'available' : ''}">
       <div class="subject-card-top"><span class="subject-icon ${subject.color}">${icon(subject.icon, 25)}</span><span class="availability ${subject.available ? '' : 'soon'}">${subject.available ? '<span class="availability-dot"></span> Disponible' : icon('lock', 10) + ' Próximamente'}</span></div>
       <h3>${escape(subject.name)}</h3><p class="tagline">${escape(subject.label)}</p><p class="description">${escape(subject.description)}</p>
@@ -184,18 +185,21 @@
     route = location.hash.slice(1) || 'inicio';
     const [subjectId, view] = route.split('/');
     activeQuiz = quizzes.get(subjectId) || null;
-    if (!activeQuiz || (view && !['practica', 'resultados'].includes(view))) {
+    const allowedViews = activeQuiz?.subject.advanced ? ['practica','resultados','simulacro','entrega','historial','revision'] : ['practica','resultados'];
+    if (!activeQuiz || (view && !allowedViews.includes(view))) {
       route = 'inicio'; activeQuiz = null;
       renderLobby();
       document.title = 'Beyond · Un esfuerzo para mañana.';
     } else {
       const name = activeQuiz.subject.name;
-      breadcrumb.innerHTML = `<a href="#inicio">Mi espacio</a><span class="breadcrumb-separator">/</span><a href="#${subjectId}">${escape(name)}</a>${view ? `<span class="breadcrumb-separator">/</span>${view === 'practica' ? 'Práctica' : 'Resultados'}` : ''}`;
+      const viewName = {practica:'Práctica',resultados:'Resultados',simulacro:'Simulacro',entrega:'Entrega',historial:'Historial',revision:'Revisión'}[view];
+      breadcrumb.innerHTML = `<a href="#inicio">Mi espacio</a><span class="breadcrumb-separator">/</span><a href="#${subjectId}">${escape(name)}</a>${view ? `<span class="breadcrumb-separator">/</span>${viewName}` : ''}`;
       renderNavigation(subjectId);
-      if (view === 'practica') renderQuestion(activeQuiz);
+      if (activeQuiz.subject.advanced) learningUIs.get(subjectId).render(view || 'inicio');
+      else if (view === 'practica') renderQuestion(activeQuiz);
       else if (view === 'resultados') renderReport(activeQuiz);
       else renderSubject(activeQuiz);
-      document.title = `${name}${view ? view === 'practica' ? ' · Práctica' : ' · Resultados' : ''} · Beyond`;
+      document.title = `${name}${view ? ' · ' + viewName : ''} · Beyond`;
     }
     lastTick = Date.now();
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -214,6 +218,8 @@
   }
 
   main.addEventListener('click', event => {
+    const scienceButton = event.target.closest('[data-science-action]');
+    if (scienceButton && activeQuiz?.subject.advanced) { learningUIs.get(activeQuiz.subject.id).handle(scienceButton); return; }
     const button = event.target.closest('[data-action]');
     if (!button || button.disabled || !activeQuiz) return;
     const quiz = activeQuiz;
@@ -259,7 +265,7 @@
         break;
       }
       case 'reset':
-        dialog.querySelector('p').textContent = `Se eliminarán tus respuestas y el tiempo de ${quiz.subject.name} en este navegador. Puedes seguir estudiando sin reiniciar.`;
+        dialog.querySelector('p').textContent = quiz.subject.advanced ? `Se reiniciarán las respuestas y el tiempo de tu práctica de ${quiz.subject.name}. Se conservarán su historial y su simulacro. Las otras materias no cambian.` : `Se eliminarán tus respuestas y el tiempo de ${quiz.subject.name} en este navegador. Puedes seguir estudiando sin reiniciar.`;
         dialog.showModal();
         break;
     }

@@ -9,15 +9,22 @@ window.Beyond.subjects = [
     storageKey: 'beyond_matematica_v1', legacyKeys: ['avanzo_matematica_v1', 'esen_diagnostico_100_v1']
   },
   {
-    id: 'ciencias', name: 'Ciencias', shortName: 'Ciencias', icon: 'science',
-    color: 'green', available: false, label: 'Explora cómo funciona el mundo.',
+    id: 'ciencias', name: 'Ciencias Naturales', shortName: 'Ciencias', icon: 'science',
+    color: 'green', available: true, label: 'Explora cómo funciona el mundo.',
     description: 'Un espacio para comprender la naturaleza, conectar conceptos y aprender con ejemplos.',
-    questions: [], guides: {}, storageKey: 'beyond_ciencias_v1', legacyKeys: ['avanzo_ciencias_v1']
+    questions: window.Beyond.scienceQuestions, guides: window.Beyond.scienceGuides,
+    advanced: true, sources: window.Beyond.scienceSources,
+    study: {subtitle:'Observa, plantea una explicación y compruébala.', areas:'FÍSICA · QUÍMICA · BIOLOGÍA · ECOLOGÍA', title:'Entiende cómo funciona tu mundo.', areaLabel:'áreas científicas'},
+    bankVersion: window.Beyond.scienceBankVersion, storageKey: 'beyond_ciencias_v1', legacyKeys: ['avanzo_ciencias_v1']
   },
   {
     id: 'ciudadania', name: 'Ciudadanía y valores', shortName: 'Ciudadanía y valores', icon: 'community',
-    color: 'orange', available: false, label: 'Aprende a construir comunidad.',
+    color: 'orange', available: true, label: 'Aprende a construir comunidad.',
     description: 'Reflexiona sobre la convivencia, los derechos y las decisiones que compartimos como sociedad.',
-    questions: [], guides: {}, storageKey: 'beyond_ciudadania_v1', legacyKeys: ['avanzo_ciudadania_v1']
+    questions: window.Beyond.citizenshipQuestions, guides: window.Beyond.citizenshipGuides,
+    advanced: true, sources: window.Beyond.citizenshipSources,
+    study: {subtitle:'Comprende el pasado, piensa con criterio y participa.', areas:'SOCIEDAD · HISTORIA · DERECHOS · GLOBALIZACIÓN · TERRITORIO', title:'Comprende tu sociedad. Construye tu mañana.', areaLabel:'áreas sociales'},
+    bankVersion: window.Beyond.citizenshipBankVersion,
+    storageKey: 'beyond_ciudadania_v1', legacyKeys: ['avanzo_ciudadania_v1']
   }
 ];

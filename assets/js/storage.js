@@ -3,11 +3,17 @@ window.Beyond.storage = (() => {
   let available = true;
 
   function empty(subject) {
-    return { answers: Array(subject.questions.length).fill(null), elapsed: 0, index: 0 };
+    const state = { answers: Array(subject.questions.length).fill(null), elapsed: 0, index: 0 };
+    if (subject.bankVersion) {
+      state.bankVersion = subject.bankVersion;
+      state.questionIds = subject.questions.map(question => question.id);
+    }
+    return state;
   }
 
   function normalize(raw, subject) {
     const state = empty(subject);
+    if (subject.bankVersion && (raw?.bankVersion !== subject.bankVersion || JSON.stringify(raw?.questionIds) !== JSON.stringify(state.questionIds))) return state;
     if (!raw || !Array.isArray(raw.answers) || raw.answers.length !== state.answers.length) return state;
     state.answers = raw.answers.map((answer, i) => Number.isInteger(answer) && answer >= 0 && answer < subject.questions[i].opts.length ? answer : null);
     state.elapsed = Number.isFinite(raw.elapsed) ? Math.max(0, Math.floor(raw.elapsed)) : 0;
@@ -35,5 +41,15 @@ window.Beyond.storage = (() => {
     return available;
   }
 
-  return { empty, normalize, load, save, isAvailable: () => available };
+  function read(key, fallback) {
+    try { const text = localStorage.getItem(key); return text ? JSON.parse(text) : fallback; }
+    catch (_) { return fallback; }
+  }
+
+  function write(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch (_) { available = false; return false; }
+  }
+
+  return { empty, normalize, load, save, read, write, isAvailable: () => available };
 })();

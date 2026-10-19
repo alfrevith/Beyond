@@ -1,0 +1,116 @@
+/* Advanced study components shared by Sciences and Citizenship.
+   Existing science-* selectors stay stable for both integrations. */
+.science-actions {display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+.hero .science-actions .button {margin-top:0}
+.science-simulation-card {display:flex;align-items:center;justify-content:space-between;gap:28px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:27px;margin-top:22px}
+.science-simulation-card>div:first-child {flex:1;max-width:580px}
+.science-simulation-card h2 {font-size:23px;letter-spacing:-.5px;margin:10px 0}
+.science-simulation-card p {font-size:12px;color:var(--muted)}
+.science-simulation-card .science-actions {max-width:230px;justify-content:flex-end;margin:0}
+.science-area-grid {display:grid;grid-template-columns:repeat(var(--study-area-count,4),minmax(0,1fr));gap:13px}
+.science-area-card {display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:20px;text-align:left;color:var(--ink);min-width:0}
+button.science-area-card:hover {border-color:var(--primary);background:#1c2330}
+.science-area-card strong {font-size:14px;line-height:1.5}
+.science-area-card b {font-size:25px;color:var(--primary)}
+.science-area-card span,.science-area-card small {font-size:11px;color:var(--muted);line-height:1.7}
+.science-question-meta {display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.science-question-meta span {font-size:10px;color:var(--muted);padding:5px 8px;border:1px solid var(--line);border-radius:5px}
+.science-choice.selected:not(.correct):not(.incorrect) {border-color:var(--primary);background:var(--accent-soft);color:var(--ink)}
+.science-choice.selected:not(.correct):not(.incorrect) .choice-letter {color:var(--primary)}
+.science-registered {font-size:12px;color:var(--muted);padding:16px;border:1px solid var(--line);border-radius:10px;line-height:1.8}
+.science-explanation {border-top:1px solid #ffffff15;margin-top:17px;padding-top:2px}
+.science-explanation .guide-label {display:block;color:var(--primary);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin:17px 0 8px}
+.science-explanation .formula {border:1px solid #ffffff15;background:#00000020;padding:13px;border-radius:8px;margin-bottom:8px}
+.science-explanation ol {padding-left:22px;line-height:1.9;margin-bottom:5px}
+.science-misconception {font-weight:600;margin-bottom:12px}
+.science-visual {margin:23px 0;border:1px solid var(--line);background:#10151e;border-radius:11px;padding:17px;min-width:0}
+.science-visual figcaption {font-size:11px;line-height:1.7;color:var(--muted);margin-bottom:14px}
+.science-visual details>summary {font-size:11px;color:var(--primary);cursor:pointer;min-height:40px;padding:12px 0}
+.science-table-scroll {overflow-x:auto;max-width:100%;margin:20px 0;border:1px solid var(--line);border-radius:9px;scrollbar-width:thin}
+.science-table {width:100%;border-collapse:collapse;font-size:12px;text-align:left;line-height:1.6}
+.science-table caption {text-align:left;padding:13px 14px;font-size:11px;color:var(--muted);caption-side:top}
+.science-table th,.science-table td {padding:12px 14px;border-top:1px solid var(--line);vertical-align:middle}
+.science-table thead th {background:#1c2330;font-size:11px;font-weight:600;color:var(--ink)}
+.science-table tbody th {font-weight:500;color:var(--ink)}
+.science-table td {color:var(--muted)}
+.science-chart,.science-circuit {width:100%;height:auto;max-height:270px;overflow:visible}
+.science-chart text {fill:var(--muted);font-size:12px}
+.science-axis {fill:none;stroke:var(--muted);stroke-width:1.5}
+.science-plot {fill:none;stroke:var(--primary);stroke-width:3}
+.science-point {fill:var(--primary)}
+.science-circuit path,.science-circuit rect,.science-circuit circle {fill:none;stroke:#c6d0df;stroke-width:2}
+.science-circuit text {stroke:none;fill:var(--primary);font-size:13px;text-anchor:middle}
+.science-foodweb {display:grid;gap:9px;list-style:none;padding:0;margin:0}
+.science-foodweb li {display:flex;gap:12px;align-items:center;font-size:12px;line-height:1.5}
+.science-foodweb span {padding:8px 10px;background:#1c2330;border-radius:6px}
+.science-foodweb b {color:var(--primary)}
+.science-score {text-align:center;min-width:130px}
+.science-score strong {display:block;font-size:50px;letter-spacing:-2px;color:var(--primary)}
+.science-score small {font-size:19px;color:var(--muted);letter-spacing:0}
+.science-score>span {display:block;font-size:10px;color:var(--muted);margin-top:7px}
+.science-report {padding:28px;background:var(--surface);border:1px solid var(--line);border-radius:18px}
+.science-report h2 {margin-bottom:16px}
+.science-report p {font-size:13px;color:var(--muted)}
+.science-history {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.science-history h2 {font-size:26px;margin-top:12px;color:var(--primary)}
+.science-history .button {margin-top:18px}
+.science-sources {margin-top:28px;border:1px solid var(--line);border-radius:12px;padding:16px 20px;background:var(--surface);font-size:12px;line-height:1.8;color:var(--muted)}
+.science-sources summary {cursor:pointer;min-height:28px;color:var(--ink)}
+.science-sources a {color:var(--primary);text-decoration:underline}
+.science-sources li {margin:9px 0}
+.question-nav button.recorded {background:var(--accent-soft);border-color:#66502d;color:var(--primary)}
+.navigator #science-topic {margin-top:0}
+.navigator #science-area+.select-label {margin-top:15px}
+.study-context {margin:20px 0;padding:18px 20px;border-left:3px solid var(--primary);background:#ffffff04;border-radius:0 10px 10px 0}
+.study-context .guide-label {font-size:10px;color:var(--primary);letter-spacing:.5px}
+.study-context p {font-size:13px;line-height:1.9;margin-top:9px;color:var(--ink)}
+.study-resource-note,.study-bar-scale {font-size:11px;color:var(--muted);line-height:1.8;margin:12px 0}
+.study-bar-row {display:grid;grid-template-columns:minmax(65px,110px) minmax(0,1fr) 36px;gap:10px;align-items:center;font-size:11px;margin:15px 0}
+.study-bar-row>b {text-align:right;font-variant-numeric:tabular-nums;color:var(--primary)}
+.study-bar-track {height:18px;background:#ffffff08;border-radius:3px;overflow:hidden}
+.study-bar-track>span {display:block;height:100%;background:var(--primary);border-radius:3px}
+.study-map {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border:1px dashed var(--line);padding:10px;border-radius:10px}
+.study-map-cell {display:flex;flex-direction:column;justify-content:center;gap:8px;min-height:95px;padding:14px;border:1px solid #eeb04944;border-radius:5px;line-height:1.6}
+.study-map-cell b {font-size:13px;color:var(--primary)}
+.study-map-cell span {font-size:11px;color:var(--ink)}
+.study-cartoon {display:block;width:100%;height:auto;max-height:240px}
+.study-cartoon path,.study-cartoon rect {fill:none;stroke:var(--primary);stroke-width:2}
+.study-cartoon text {fill:var(--ink);font-size:14px;font-family:inherit}
+.study-question-sources {margin-top:18px;font-size:12px;line-height:1.8}
+.study-question-sources summary {cursor:pointer;min-height:36px;color:var(--primary)}
+.study-question-sources a {color:var(--primary);text-decoration:underline;overflow-wrap:anywhere}
+.study-question-sources li {margin:8px 0}
+@media(max-width:540px) {
+  .study-context {padding:15px}
+  .study-context p {font-size:12px}
+  .study-map {grid-template-columns:1fr}
+  .study-map-cell {min-height:70px}
+  .study-bar-row {grid-template-columns:75px minmax(0,1fr) 28px;gap:7px;font-size:10px}
+}
+@media(max-width:1200px) {
+  .science-area-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .science-simulation-card {align-items:flex-start;flex-direction:column;gap:17px}
+  .science-simulation-card .science-actions {max-width:none;justify-content:flex-start}
+}
+@media(max-width:540px) {
+  .science-simulation-card {padding:23px}
+  .science-simulation-card h2 {font-size:22px}
+  .science-actions {gap:8px}
+  .science-actions .button {font-size:11px}
+  .science-area-card {padding:17px;gap:9px}
+  .science-area-card strong {font-size:12px}
+  .science-area-card span,.science-area-card small {font-size:10px}
+  .science-history {grid-template-columns:1fr}
+  .science-visual {padding:12px;margin:19px 0}
+  .science-table th,.science-table td {padding:10px;font-size:11px;min-width:60px}
+  .science-table caption {font-size:10px}
+  .science-score {align-self:center}
+  .science-score strong {font-size:47px}
+  .science-question-meta span {font-size:9px}
+  .science-choice .answer-mark {font-size:9px;max-width:75px;line-height:1.6}
+  .science-foodweb li {font-size:11px;gap:8px}
+  .science-foodweb span {padding:8px}
+}
+@media(max-width:350px) {
+  .science-area-grid {grid-template-columns:1fr}
+}

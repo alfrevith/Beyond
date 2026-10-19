@@ -3,6 +3,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { DATA_FILES } = require('../scripts/validate-science.cjs');
+const { DATA_FILES: CITIZENSHIP_FILES } = require('../scripts/validate-citizenship.cjs');
 
 function setup(initial = {}, blocked = false) {
   const values = new Map(Object.entries(initial));
@@ -10,7 +12,7 @@ function setup(initial = {}, blocked = false) {
     getItem(key) { if (blocked) throw new Error('Storage blocked'); return values.get(key) ?? null; },
     setItem(key, value) { if (blocked) throw new Error('Storage blocked'); values.set(key, value); }
   } });
-  for (const file of ['data/math-questions.js', 'data/math-guides.js', 'data/subjects.js', 'storage.js', 'quiz.js']) {
+  for (const file of ['data/math-questions.js', 'data/math-guides.js', ...[...DATA_FILES,...CITIZENSHIP_FILES].map(name => 'data/' + name + '.js'), 'data/subjects.js', 'storage.js', 'quiz.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context);
   }
   const app = context.window.Beyond;
@@ -28,7 +30,7 @@ test('El banco conserva 100 preguntas válidas y una guía completa para cada te
     assert.ok(question.stem && question.explain);
     for (const key of ['idea', 'rule', 'example', 'tip']) assert.ok(subject.guides[question.cat][key]);
   }
-  assert.equal(app.subjects.filter(subject => !subject.available).length, 2);
+  assert.equal(app.subjects.filter(subject => !subject.available).length, 0);
 });
 
 test('La primera respuesta es definitiva; se puede saltar y continuar sin perderla', () => {

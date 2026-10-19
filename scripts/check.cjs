@@ -1,0 +1,21 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const { execFileSync } = require('node:child_process');
+const root = path.resolve(__dirname, '..');
+const files = [];
+function walk(directory) {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const target = path.join(directory, entry.name);
+    if (entry.isDirectory()) walk(target);
+    else if (/\.(js|cjs)$/.test(entry.name)) files.push(target);
+  }
+}
+walk(path.join(root, 'assets', 'js'));
+walk(path.join(root, 'scripts'));
+for (const file of files) execFileSync(process.execPath, ['--check', file], { stdio: 'inherit' });
+const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+for (const match of html.matchAll(/(?:src|href)="(assets\/[^"]+)"/g)) {
+  if (!fs.existsSync(path.join(root, match[1]))) throw new Error(`Falta un recurso: ${match[1]}`);
+}
+if (html !== fs.readFileSync(path.join(root, 'diagnostico_esen_100_preguntas.html'), 'utf8')) throw new Error('La entrada de compatibilidad no coincide con index.html.');
+console.log(`Sintaxis correcta en ${files.length} archivos. Recursos y entrada anterior verificados.`);

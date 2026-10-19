@@ -53,6 +53,7 @@ tests/                             Pruebas del banco, progreso y motor
 ## Funciones
 
 - Lobby con tres materias y disponibilidad explícita.
+- Aviso inicial con el texto de independencia y alcance de AVANZO 2026, personaje proporcionado y botones Continuar/Salir. Se muestra una vez por apertura al llegar al lobby; vuelve a aparecer al recargar, sin repetirse al navegar entre materias e inicio. Salir abre una página en blanco y conserva el progreso local.
 - Guías rápidas por tema y práctica de un tema o del banco completo.
 - Explicación inmediata en aciertos y errores, con ayudas durante el ejercicio.
 - Primera respuesta conservada para el diagnóstico; repaso de errores independiente.
@@ -60,6 +61,8 @@ tests/                             Pruebas del banco, progreso y motor
 - Tiempo de estudio sin límite; se pausa al salir de la práctica o al ocultar la pestaña.
 - Guardado local de respuestas, posición y tiempo. Reinicio con confirmación.
 - Navegación por teclado, foco visible y menú de preguntas plegable en celular.
+
+El aviso está aislado en `assets/js/welcome.js` y `assets/css/welcome.css`, con contenido accesible en `index.html` e imagen en `assets/images/welcome-character.png`. Usa un diálogo nativo y texto con desplazamiento propio cuando falta altura, manteniendo ambos botones visibles. No guarda una aceptación permanente ni añade temporizadores o animaciones.
 
 El almacenamiento pertenece al navegador y al origen. Cambiar de navegador, usar modo privado, borrar datos o pasar de `file://` al servidor local puede dar lugar a un progreso distinto. Las claves actuales usan el prefijo `beyond_`; se recuperan también los progresos de versiones anteriores cuando son accesibles desde el mismo origen, sin borrar esos registros.
 

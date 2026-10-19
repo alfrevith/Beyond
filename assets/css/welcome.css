@@ -1,0 +1,83 @@
+/* Transparent stage: the PNG silhouette floats outside the message card. */
+body:has(#welcome-dialog[open]) {overflow:hidden}
+#welcome-dialog {
+  width:calc(100% - 96px);
+  max-width:1100px;
+  max-height:calc(100% - 72px);
+  padding:0;
+  overflow:visible;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+}
+#welcome-dialog::backdrop {background:#070a12df;backdrop-filter:blur(8px)}
+.welcome-layout {position:relative;display:grid;grid-template-columns:35% minmax(0,1fr);grid-template-rows:minmax(0,1fr);max-height:min(780px,calc(100dvh - 72px))}
+.welcome-art {position:relative;z-index:2;min-height:0;pointer-events:none;isolation:isolate}
+.welcome-art img {position:absolute;z-index:2;left:-18px;top:50%;width:calc(100% + 24px);height:auto;max-height:min(670px,calc(100dvh - 48px));object-fit:contain;transform:translateY(-53%) rotate(-7deg);filter:drop-shadow(0 18px 22px #000b) drop-shadow(0 0 1px #f2bd6955)}
+.welcome-art-word {position:absolute;left:4px;top:50%;color:transparent;-webkit-text-stroke:1px #f2bd6920;font-size:78px;font-weight:800;letter-spacing:9px;writing-mode:vertical-rl;transform:translateY(-50%) rotate(180deg);line-height:1;user-select:none}
+.welcome-art-orbit {position:absolute;width:100%;aspect-ratio:1;left:-12px;top:50%;transform:translateY(-50%) rotate(-18deg);border:1px solid #f2bd6933;border-radius:50%;background:radial-gradient(ellipse,#f2bd6920,transparent 68%);box-shadow:0 0 0 26px #f2bd6905,0 0 90px #f2bd6910}
+.welcome-art-orbit::after {content:'';position:absolute;inset:24px -22px;border:1px solid #f2bd6920;border-radius:50%;transform:rotate(-27deg)}
+.welcome-art-brand {position:absolute;top:-14px;left:36px;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:3px;transform:rotate(-7deg)}
+.welcome-art-brand span {color:var(--primary);margin-left:10px}
+.welcome-art-caption {position:absolute;z-index:3;bottom:-12px;left:38px;white-space:nowrap;padding:11px 17px;border:1px solid #f2bd6944;border-radius:6px;background:#191b22ed;box-shadow:0 8px 25px #0007;color:var(--primary);font-size:9px;font-weight:700;letter-spacing:2px;transform:rotate(-7deg)}
+.welcome-art-spark {position:absolute;z-index:3;color:var(--primary);text-shadow:0 0 22px #f2bd6955}
+.welcome-art-spark-one {left:8px;top:15%;font-size:33px;transform:rotate(14deg)}
+.welcome-art-spark-two {right:20px;bottom:12%;font-size:25px}
+.welcome-panel {position:relative;z-index:1;display:flex;flex-direction:column;min-height:0;min-width:0;background:linear-gradient(145deg,#20242e,#151a23 65%);border:1px solid #f2bd6933;border-radius:24px;box-shadow:0 30px 100px #0008;overflow:hidden}
+.welcome-copy {padding:34px 38px 19px 44px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;min-height:0}
+.welcome-copy:focus-visible {outline:2px solid var(--primary);outline-offset:-5px}
+.welcome-eyebrow {display:flex;gap:10px;align-items:center;font-size:9px;letter-spacing:1.8px;font-weight:700;color:var(--primary)}
+.welcome-eyebrow>span {font-size:23px}
+#welcome-title {font-size:32px;line-height:1.2;letter-spacing:-1px;margin:13px 0 23px}
+.welcome-copy p {font-size:13px;line-height:1.85;margin:0 0 16px;color:var(--muted)}
+.welcome-copy strong {font-weight:600;color:var(--ink)}
+#welcome-intro {padding:12px 15px;border:1px solid #f2bd6926;border-radius:9px;background:#f2bd6909;color:#ead2ad}
+.welcome-copy .welcome-good-luck {margin-bottom:0;padding:1px 0 5px}
+.welcome-good-luck strong {color:var(--primary)}
+.welcome-actions {display:flex;justify-content:flex-end;flex-shrink:0;gap:12px;padding:20px 38px 25px;border-top:1px solid var(--line);background:#151a23}
+.welcome-actions .button {min-height:44px;min-width:112px;justify-content:center}
+.welcome-actions .button-primary {min-width:154px;gap:18px}
+@media(max-width:760px) {
+  #welcome-dialog {width:calc(100% - 36px);max-height:calc(100% - 40px)}
+  .welcome-layout {display:flex;flex-direction:column;padding-top:140px;max-height:calc(100dvh - 40px)}
+  .welcome-art {position:absolute;left:0;right:0;top:0;height:140px;z-index:2}
+  .welcome-art img {left:auto;right:4px;top:auto;bottom:-6px;width:160px;height:160px;max-height:none;transform:rotate(-9deg)}
+  .welcome-art-word {display:none}
+  .welcome-art-orbit {width:170px;left:auto;right:0;top:64%;box-shadow:0 0 0 15px #f2bd6905}
+  .welcome-art-brand {top:37px;left:13px;font-size:12px;letter-spacing:3px;transform:rotate(-5deg)}
+  .welcome-art-caption {top:76px;bottom:auto;left:6px;padding:8px 11px;max-width:145px;white-space:normal;font-size:8px;line-height:1.8;letter-spacing:1.3px;transform:rotate(-5deg)}
+  .welcome-art-spark-one {left:auto;right:157px;top:10px;font-size:23px}
+  .welcome-art-spark-two {right:0;bottom:10px;font-size:20px}
+  .welcome-panel {border-radius:20px}
+  .welcome-copy {padding:24px 23px 18px}
+  .welcome-eyebrow {display:none}
+  #welcome-title {font-size:27px;margin:0 0 18px}
+  .welcome-copy p {font-size:12px;line-height:1.85;margin-bottom:14px}
+  .welcome-actions {padding:16px 23px;gap:10px}
+  .welcome-actions .button {min-width:0;flex:1}
+  .welcome-actions .button-primary {min-width:0;flex:1.3}
+}
+@media(max-height:540px) and (min-width:761px) {
+  #welcome-dialog {max-height:calc(100% - 40px)}
+  .welcome-layout {max-height:calc(100dvh - 40px)}
+  .welcome-art img {max-height:calc(100dvh - 44px);transform:translateY(-50%) rotate(-5deg)}
+  .welcome-art-brand {top:8px;left:10px}
+  .welcome-art-caption {bottom:10px;left:10px;font-size:8px}
+  .welcome-art-spark-one,.welcome-art-spark-two {display:none}
+  .welcome-art-word {display:none}
+  .welcome-copy {padding-top:23px}
+  #welcome-title {font-size:28px;margin-bottom:16px}
+  .welcome-actions {padding-top:14px;padding-bottom:14px}
+}
+@media(max-height:650px) and (max-width:760px) {
+  .welcome-layout {padding-top:100px}
+  .welcome-art {height:100px}
+  .welcome-art img {height:110px;width:110px;bottom:-5px}
+  .welcome-art-brand {top:15px;font-size:10px}
+  .welcome-art-caption {top:47px;max-width:155px;padding:6px 10px}
+  .welcome-art-orbit {width:120px}
+  .welcome-art-spark-one {right:120px;top:5px;font-size:17px}
+  .welcome-art-spark-two {display:none}
+  .welcome-copy {padding-top:20px}
+}

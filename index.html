@@ -10,6 +10,7 @@
     <link rel="apple-touch-icon" href="assets/images/beyond-logo.png">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/science.css">
+    <link rel="stylesheet" href="assets/css/welcome.css">
     <script defer src="assets/js/data/math-questions.js"></script>
     <script defer src="assets/js/data/math-guides.js"></script>
     <script defer src="assets/js/data/science-bank.js"></script>
@@ -31,6 +32,7 @@
     <script defer src="assets/js/science-session.js"></script>
     <script defer src="assets/js/science-ui.js"></script>
     <script defer src="assets/js/app.js"></script>
+    <script defer src="assets/js/welcome.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Saltar al contenido</a>
@@ -49,6 +51,34 @@
       </div>
     </div>
     <div id="toast" class="toast" role="status" hidden></div>
+    <dialog id="welcome-dialog" aria-labelledby="welcome-title" aria-describedby="welcome-intro">
+      <div class="welcome-layout">
+        <div class="welcome-art" aria-hidden="true">
+          <span class="welcome-art-word">BEYOND</span>
+          <span class="welcome-art-orbit"></span>
+          <span class="welcome-art-spark welcome-art-spark-one">✦</span>
+          <span class="welcome-art-spark welcome-art-spark-two">✧</span>
+          <span class="welcome-art-brand">BEYOND <span>✦</span></span>
+          <img src="assets/images/welcome-character.png" alt="" width="1247" height="1261" decoding="async">
+          <span class="welcome-art-caption">SUPERA TUS LÍMITES</span>
+        </div>
+        <div class="welcome-panel">
+          <div class="welcome-copy" tabindex="0" role="region" aria-label="Información antes de comenzar">
+            <span class="welcome-eyebrow"><span aria-hidden="true">✧</span> TU ESFUERZO, TU MAÑANA</span>
+            <h2 id="welcome-title">¡Antes de comenzar!</h2>
+            <p id="welcome-intro">Esta plataforma no es oficial ni está relacionada con el Ministerio de Educación.</p>
+            <p>La creé con la intención de ayudarte a <strong>repasar, entender mejor diferentes temas y descubrir qué necesitas reforzar</strong>, mediante preguntas y explicaciones que buscan simular un poco la prueba AVANZO.</p>
+            <p>Ten en cuenta que <strong>ninguno de los temas está confirmado para aparecer en AVANZO 2026</strong> y que algunas preguntas o respuestas podrían contener errores.</p>
+            <p>¡Espero que disfrutes la plataforma y que te sea de mucha ayuda! Es <strong>totalmente gratuita</strong>, así que úsala cuanto quieras y, si conoces a alguien a quien también pueda servirle, no dudes en compartirla.</p>
+            <p class="welcome-good-luck"><strong>¡Muchísima suerte en tu prueba y supera tus límites! 🍀</strong></p>
+          </div>
+          <form method="dialog" class="welcome-actions">
+            <button class="button button-light" value="exit">Salir</button>
+            <button class="button button-primary" value="continue" autofocus>Continuar <span aria-hidden="true">→</span></button>
+          </form>
+        </div>
+      </div>
+    </dialog>
     <dialog id="reset-dialog" aria-labelledby="reset-title"><form method="dialog"><span class="dialog-icon" aria-hidden="true">↺</span><h2 id="reset-title">¿Empezar de nuevo?</h2><p>Se eliminarán tus respuestas y el tiempo de Matemática en este navegador. Puedes seguir estudiando sin reiniciar.</p><div class="dialog-actions"><button class="button button-light" value="cancel" autofocus>Conservar mi progreso</button><button class="button button-primary" value="reset">Sí, reiniciar</button></div></form></dialog>
     <noscript><p class="noscript">Activa JavaScript en tu navegador para abrir las guías y guardar tus respuestas.</p></noscript>
   </body>
